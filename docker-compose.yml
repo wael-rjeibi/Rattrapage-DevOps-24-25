@@ -1,0 +1,36 @@
+services:
+  mysqldb:
+    image: 'mysql:8.0'
+    restart: unless-stopped
+    environment:
+      MYSQL_DATABASE: kaddem
+      MYSQL_ALLOW_EMPTY_PASSWORD: "yes"
+    ports:
+      - "3306:3306"
+    networks:
+      - mynetwork
+    volumes:
+      - db:/var/lib/mysql
+
+  spring-app:
+    image: "192.168.33.10:8085/repository/docker-hosted/waelrjeibi/eventsproject:${BUILD_NUMBER}"  # Utiliser le tag d'image basé sur le numéro de build
+    restart: on-failure
+    environment:
+      SPRING_DATASOURCE_URL: "jdbc:mysql://mysqldb:3306/kaddem?createDatabaseIfNotExist=true&useUnicode=true"
+      SPRING_DATASOURCE_USERNAME: "root"
+      SPRING_DATASOURCE_PASSWORD: null
+      spring.jpa.hibernate.ddl-auto: "update"
+      spring.jpa.properties.hibernate.dialect: "org.hibernate.dialect.MySQL8Dialect"
+    ports:
+      - "8089:8089"
+    depends_on:
+      - mysqldb
+    networks:
+      - mynetwork
+
+networks:
+  mynetwork:
+    driver: bridge
+
+volumes:
+  db:
