@@ -5,9 +5,10 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.junit.jupiter.api.extension.ExtendWith;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.*;
 
 import tn.esprit.eventsproject.entities.Event;
 import tn.esprit.eventsproject.entities.Logistics;
@@ -22,7 +23,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
 
-import static org.mockito.Mockito.*;
 import static org.junit.jupiter.api.Assertions.*;
 
 @ExtendWith(MockitoExtension.class)
@@ -42,7 +42,7 @@ public class EventServiceMockitoTest {
 
     @BeforeEach
     void setUp() {
-        MockitoAnnotations.initMocks(this);
+        // MockitoAnnotations.initMocks(this); // This is redundant with @ExtendWith(MockitoExtension.class)
     }
 
     @Test
@@ -63,6 +63,7 @@ public class EventServiceMockitoTest {
         Participant participant = new Participant();
         participant.setIdPart(1);
         Event event = new Event();
+        event.setParticipants(new HashSet<>()); // Ensure the set is initialized to avoid NullPointerException
         when(participantRepository.findById(1)).thenReturn(Optional.of(participant));
         when(eventRepository.save(any(Event.class))).thenReturn(event);
 
@@ -78,6 +79,7 @@ public class EventServiceMockitoTest {
     void testAssignLogisticsToEventByDescription() {
         Event event = new Event();
         event.setDescription("Annual Meet");
+        event.setLogistics(new HashSet<>()); // Initialize logistics to avoid NullPointerException
         Logistics logistics = new Logistics();
         when(eventRepository.findByDescription("Annual Meet")).thenReturn(event);
         when(logisticsRepository.save(any(Logistics.class))).thenReturn(logistics);
