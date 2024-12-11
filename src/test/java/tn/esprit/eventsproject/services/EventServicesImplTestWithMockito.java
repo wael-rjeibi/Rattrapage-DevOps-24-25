@@ -14,7 +14,6 @@ import tn.esprit.eventsproject.entities.Participant;
 import tn.esprit.eventsproject.repositories.EventRepository;
 import tn.esprit.eventsproject.repositories.ParticipantRepository;
 
-import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.Optional;
 
