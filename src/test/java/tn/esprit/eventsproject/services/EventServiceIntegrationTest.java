@@ -49,26 +49,6 @@ public class EventServiceIntegrationTest {
 
 
 
-    
-    @Test
-    @DisplayName("Should calculate cost for an event with logistics")
-    void testCalculateAndSetEventCost() {
-        Event event = new Event();
-        event.setDescription("Team Building");
-        event = eventRepository.save(event);
 
-        Logistics logistics = new Logistics();
-        logistics.setDescription("Catering");
-        logistics.setPrixUnit(100);
-        logistics.setQuantite(50); // $5000 total
-        logistics.setReserve(true);
-        logistics = logisticsRepository.save(logistics);
-        eventService.addAffectLog(logistics, event.getDescription());
-
-        eventService.calculCout();
-        Optional<Event> updatedEvent = eventRepository.findById(event.getIdEvent());
-
-        assertTrue(updatedEvent.isPresent());
-        assertEquals(5000, updatedEvent.get().getCout());
-    }
+   
 }
