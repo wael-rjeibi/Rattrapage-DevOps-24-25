@@ -10,4 +10,3 @@ RUN curl -o /eventsProject-1.0.0.jar -L "http://192.168.33.10:8081/repository/ma
 # Set the entry point
 ENTRYPOINT ["java", "-jar", "/eventsProject-1.0.0.jar"]
 
-ChatGPT
